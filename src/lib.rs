@@ -16,11 +16,6 @@
 //! let hash = murmur_hash64a(key.as_bytes(), seed);
 //! ```
 
-#![crate_name = "murmurhash64"]
-#![crate_type = "lib"]
-#![license = "BSD"]
-#![comment = "MurmurHash2 (64bit version) implementation"]
-
 #![experimental]
 
 pub use murmurhash64::murmur_hash64a;

@@ -21,9 +21,15 @@
 #![license = "BSD"]
 #![comment = "MurmurHash2 (64bit version) implementation"]
 
+#![feature(default_type_params)]
+
 #![experimental]
 
 pub use murmurhash64::murmur_hash64a;
+pub use hasher::MurmurState;
+pub use hasher::MurmurHasher;
+
+mod hasher;
 
 mod murmurhash64 {
     /// Hash the given key and the given seed.
@@ -39,6 +45,7 @@ mod murmurhash64 {
     ///
     /// let hash = murmur_hash64a(key.as_bytes(), seed);
     /// ```
+    #[inline]
     pub fn murmur_hash64a(key: &[u8], seed: u64) -> u64 {
         let m : u64 = 0xc6a4a7935bd1e995;
         let r : uint = 47;

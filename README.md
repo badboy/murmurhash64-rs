@@ -26,6 +26,21 @@ fn main() {
 
 ```
 
+As a `Hasher`
+
+```rust
+use std::collections::HashMap;
+use murmurhash64::MurmurHasher;
+
+fn main() {
+    let mut hashmap: HashMap<&str, uint, MurmurHasher> = HashMap::with_hasher(MurmurHasher::new());
+    hashmap.insert("abc", 123);
+    hashmap.insert("def", 456);
+    assert_eq!(Some(&123), hashmap.get("abc"));
+    assert_eq!(Some(&456), hashmap.get("def"));
+}
+```
+
 ## Tests
 
 Run tests with:

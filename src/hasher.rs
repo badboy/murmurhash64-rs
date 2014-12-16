@@ -22,6 +22,21 @@ impl Writer for MurmurState {
     }
 }
 
+/// MurmurHash2 can also be used as the hash algorithm in a HashMap
+/// (or similar). For this it implements the std::hash::Hasher trait.
+///
+/// # Basic Example
+///
+/// ```rust
+/// # use std::collections::HashMap;
+/// # use murmurhash64::MurmurHasher;
+/// let mut hashmap = HashMap::with_hasher(MurmurHasher::new());
+/// hashmap.insert("abc", 123i);
+/// hashmap.insert("def", 456i);
+/// assert_eq!(Some(&123), hashmap.get("abc"));
+/// assert_eq!(Some(&456), hashmap.get("def"));
+/// ```
+
 #[deriving(Copy)]
 pub struct MurmurHasher {
     seed: u64
@@ -55,9 +70,9 @@ mod test {
     #[test]
     fn hashmap_str() {
         use std::collections::HashMap;
-        let mut hashmap: HashMap<&str, uint, MurmurHasher> = HashMap::with_hasher(MurmurHasher::new());
-        hashmap.insert("abc", 123);
-        hashmap.insert("def", 456);
+        let mut hashmap = HashMap::with_hasher(MurmurHasher::new());
+        hashmap.insert("abc", 123i);
+        hashmap.insert("def", 456i);
         assert_eq!(Some(&123), hashmap.get("abc"));
         assert_eq!(Some(&456), hashmap.get("def"));
     }
@@ -65,9 +80,9 @@ mod test {
     #[test]
     fn hashmap_uint() {
         use std::collections::HashMap;
-        let mut hashmap: HashMap<uint, &str, MurmurHasher> = HashMap::with_hasher(MurmurHasher::new());
-        hashmap.insert(123, "abc");
-        hashmap.insert(456, "def");
+        let mut hashmap = HashMap::with_hasher(MurmurHasher::new());
+        hashmap.insert(123u, "abc");
+        hashmap.insert(456u, "def");
         assert_eq!(Some(&"abc"), hashmap.get(&123));
         assert_eq!(Some(&"def"), hashmap.get(&456));
     }

@@ -37,7 +37,7 @@ impl Writer for MurmurState {
 /// assert_eq!(Some(&456), hashmap.get("def"));
 /// ```
 
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct MurmurHasher {
     seed: u64
 }

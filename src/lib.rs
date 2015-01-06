@@ -53,13 +53,13 @@ mod murmurhash64 {
             let mut k : u64;
 
             k  = key[i+0] as u64;
-            k |= key[i+1] as u64 << 8;
-            k |= key[i+2] as u64 << 16;
-            k |= key[i+3] as u64 << 24;
-            k |= key[i+4] as u64 << 32;
-            k |= key[i+5] as u64 << 40;
-            k |= key[i+6] as u64 << 48;
-            k |= key[i+7] as u64 << 56;
+            k |= (key[i+1] as u64) << 8;
+            k |= (key[i+2] as u64) << 16;
+            k |= (key[i+3] as u64) << 24;
+            k |= (key[i+4] as u64) << 32;
+            k |= (key[i+5] as u64) << 40;
+            k |= (key[i+6] as u64) << 48;
+            k |= (key[i+7] as u64) << 56;
 
             k *= m;
             k ^= k >> r;
@@ -71,12 +71,12 @@ mod murmurhash64 {
         };
 
         let over = len & 7;
-        if over == 7 { h ^= key[i+6] as u64 << 48; }
-        if over >= 6 { h ^= key[i+5] as u64 << 40; }
-        if over >= 5 { h ^= key[i+4] as u64 << 32; }
-        if over >= 4 { h ^= key[i+3] as u64 << 24; }
-        if over >= 3 { h ^= key[i+2] as u64 << 16; }
-        if over >= 2 { h ^= key[i+1] as u64 << 8; }
+        if over == 7 { h ^= (key[i+6] as u64) << 48; }
+        if over >= 6 { h ^= (key[i+5] as u64) << 40; }
+        if over >= 5 { h ^= (key[i+4] as u64) << 32; }
+        if over >= 4 { h ^= (key[i+3] as u64) << 24; }
+        if over >= 3 { h ^= (key[i+2] as u64) << 16; }
+        if over >= 2 { h ^= (key[i+1] as u64) << 8; }
         if over >= 1 { h ^= key[i+0] as u64; }
         if over >  0 { h *= m; }
 

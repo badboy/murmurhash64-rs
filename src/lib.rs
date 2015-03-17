@@ -42,13 +42,13 @@ mod murmurhash64 {
     /// ```
     pub fn murmur_hash64a(key: &[u8], seed: u64) -> u64 {
         let m : u64 = 0xc6a4a7935bd1e995;
-        let r : uint = 47;
+        let r : u8 = 47;
 
         let len = key.len();
-        let mut h : u64 = seed ^ (len as u64 * m);
+        let mut h : u64 = seed ^ ((len as u64).wrapping_mul(m));
 
         let endpos = len-(len&7);
-        let mut i = 0u;
+        let mut i = 0;
         while i != endpos {
             let mut k : u64;
 
@@ -61,11 +61,11 @@ mod murmurhash64 {
             k |= (key[i+6] as u64) << 48;
             k |= (key[i+7] as u64) << 56;
 
-            k *= m;
+            k = k.wrapping_mul(m);
             k ^= k >> r;
-            k *= m;
+            k = k.wrapping_mul(m);
             h ^= k;
-            h *= m;
+            h = h.wrapping_mul(m);
 
             i += 8;
         };
@@ -78,10 +78,10 @@ mod murmurhash64 {
         if over >= 3 { h ^= (key[i+2] as u64) << 16; }
         if over >= 2 { h ^= (key[i+1] as u64) << 8; }
         if over >= 1 { h ^= key[i+0] as u64; }
-        if over >  0 { h *= m; }
+        if over >  0 { h = h.wrapping_mul(m); }
 
         h ^= h >> r;
-        h *= m;
+        h = h.wrapping_mul(m);
         h ^= h >> r;
         h
     }

@@ -16,13 +16,11 @@
 //! let hash = murmur_hash64a(key.as_bytes(), seed);
 //! ```
 
-#![feature(default_type_params)]
-
-#![experimental]
+#![feature(std_misc)]
 
 pub use murmurhash64::murmur_hash64a;
-pub use hasher::MurmurState;
 pub use hasher::MurmurHasher;
+pub use hasher::MurmurState;
 
 mod hasher;
 

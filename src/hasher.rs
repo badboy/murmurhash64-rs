@@ -1,26 +1,7 @@
-use std::hash::Hash;
+use std::default::Default;
 use std::hash::Hasher;
-use std::hash::Writer;
-
+use std::collections::hash_state::HashState;
 use murmurhash64::murmur_hash64a;
-
-pub struct MurmurState {
-    bytes: Vec<u8>
-}
-
-impl MurmurState {
-    #[inline]
-    fn new() -> MurmurState {
-        MurmurState { bytes: Vec::new() }
-    }
-}
-
-impl Writer for MurmurState {
-    #[inline]
-    fn write(&mut self, bytes: &[u8]) {
-        self.bytes.push_all(bytes);
-    }
-}
 
 /// MurmurHash2 can also be used as the hash algorithm in a HashMap
 /// (or similar). For this it implements the std::hash::Hasher trait.
@@ -28,61 +9,86 @@ impl Writer for MurmurState {
 /// # Basic Example
 ///
 /// ```rust
+/// # #![feature(std_misc)]
 /// # use std::collections::HashMap;
-/// # use murmurhash64::MurmurHasher;
-/// let mut hashmap = HashMap::with_hasher(MurmurHasher::new());
-/// hashmap.insert("abc", 123i);
-/// hashmap.insert("def", 456i);
+/// # use murmurhash64::{MurmurHasher,MurmurState};
+/// let s = MurmurState::new();
+/// let mut hashmap : HashMap<&'static str, usize, MurmurState> = HashMap::with_hash_state(s);
+/// hashmap.insert("abc", 123);
+/// hashmap.insert("def", 456);
 /// assert_eq!(Some(&123), hashmap.get("abc"));
 /// assert_eq!(Some(&456), hashmap.get("def"));
 /// ```
 
-#[derive(Copy)]
 pub struct MurmurHasher {
-    seed: u64
+    state: u64
 }
 
 impl MurmurHasher {
-    #[inline]
     pub fn new() -> MurmurHasher {
-        MurmurHasher { seed: 0 }
+        MurmurHasher { state: 0 }
     }
 
-    #[inline]
     pub fn with_seed(seed: u64) -> MurmurHasher {
-        MurmurHasher { seed: seed }
+        MurmurHasher { state: seed }
     }
 }
 
-impl Hasher<MurmurState> for MurmurHasher {
-    #[inline]
-    fn hash<Sized? T: Hash<MurmurState>>(&self, value: &T) -> u64 {
-        let mut state = MurmurState::new();
-        value.hash(&mut state);
-        murmur_hash64a(state.bytes.as_slice(), self.seed)
+impl Default for MurmurHasher {
+    fn default() -> MurmurHasher {
+        MurmurHasher::new()
+    }
+}
+
+impl Hasher for MurmurHasher {
+    fn finish(&self) -> u64 {
+        self.state
+    }
+
+    fn write(&mut self, buf: &[u8]) {
+        self.state = murmur_hash64a(buf, self.state)
+    }
+}
+
+
+pub struct MurmurState {
+    seed: u64
+}
+
+impl MurmurState {
+    pub fn new() -> MurmurState {
+        MurmurState { seed: 0 }
+    }
+}
+
+impl HashState for MurmurState {
+    type Hasher = MurmurHasher;
+    fn hasher(&self) -> MurmurHasher {
+        MurmurHasher::with_seed(self.seed)
     }
 }
 
 #[cfg(test)]
 mod test {
-    use super::MurmurHasher;
+    use super::MurmurState;
+    use std::collections::HashMap;
 
     #[test]
     fn hashmap_str() {
-        use std::collections::HashMap;
-        let mut hashmap = HashMap::with_hasher(MurmurHasher::new());
-        hashmap.insert("abc", 123i);
-        hashmap.insert("def", 456i);
+        let s = MurmurState::new();
+        let mut hashmap : HashMap<&'static str, isize, MurmurState> = HashMap::with_hash_state(s);
+        hashmap.insert("abc", 123);
+        hashmap.insert("def", 456);
         assert_eq!(Some(&123), hashmap.get("abc"));
         assert_eq!(Some(&456), hashmap.get("def"));
     }
 
     #[test]
     fn hashmap_uint() {
-        use std::collections::HashMap;
-        let mut hashmap = HashMap::with_hasher(MurmurHasher::new());
-        hashmap.insert(123u, "abc");
-        hashmap.insert(456u, "def");
+        let s = MurmurState::new();
+        let mut hashmap : HashMap<usize, &'static str, MurmurState> = HashMap::with_hash_state(s);
+        hashmap.insert(123, "abc");
+        hashmap.insert(456, "def");
         assert_eq!(Some(&"abc"), hashmap.get(&123));
         assert_eq!(Some(&"def"), hashmap.get(&456));
     }

@@ -6,3 +6,6 @@ description = "Implementation of MurmurHash2 (64bit version)"
 homepage = "https://github.com/badboy/murmurhash64-rs"
 license = "BSD-3-Clause"
 readme = "README.md"
+
+[dependencies]
+rand = "0.3"

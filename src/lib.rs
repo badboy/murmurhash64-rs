@@ -18,9 +18,12 @@
 
 #![feature(std_misc)]
 
+extern crate rand;
+
 pub use murmurhash64::murmur_hash64a;
 pub use hasher::MurmurHasher;
 pub use hasher::MurmurState;
+pub use hasher::RandomMurmurState;
 
 mod hasher;
 

@@ -1,6 +1,7 @@
 use std::default::Default;
 use std::hash::Hasher;
 use std::collections::hash_state::HashState;
+use rand::{self,Rng};
 use murmurhash64::murmur_hash64a;
 
 /// MurmurHash2 can also be used as the hash algorithm in a HashMap
@@ -51,26 +52,47 @@ impl Hasher for MurmurHasher {
 }
 
 
-pub struct MurmurState {
-    seed: u64
-}
+pub struct MurmurState(u64);
 
 impl MurmurState {
     pub fn new() -> MurmurState {
-        MurmurState { seed: 0 }
+        MurmurState(0)
     }
+}
+
+impl Default for MurmurState {
+    fn default() -> MurmurState { MurmurState::new() }
 }
 
 impl HashState for MurmurState {
     type Hasher = MurmurHasher;
     fn hasher(&self) -> MurmurHasher {
-        MurmurHasher::with_seed(self.seed)
+        MurmurHasher::with_seed(self.0)
+    }
+}
+
+pub struct RandomMurmurState(u64);
+
+impl RandomMurmurState {
+    fn new() -> RandomMurmurState {
+        RandomMurmurState(rand::thread_rng().gen())
+    }
+}
+
+impl Default for RandomMurmurState {
+    fn default() -> RandomMurmurState { RandomMurmurState::new() }
+}
+
+impl HashState for RandomMurmurState {
+    type Hasher = MurmurHasher;
+    fn hasher(&self) -> MurmurHasher {
+        MurmurHasher::with_seed(self.0)
     }
 }
 
 #[cfg(test)]
 mod test {
-    use super::MurmurState;
+    use super::{MurmurState,MurmurHasher,RandomMurmurState};
     use std::collections::HashMap;
 
     #[test]
@@ -92,4 +114,18 @@ mod test {
         assert_eq!(Some(&"abc"), hashmap.get(&123));
         assert_eq!(Some(&"def"), hashmap.get(&456));
     }
+
+    #[test]
+    fn hashmap_default() {
+        use std::collections::hash_state::DefaultState;
+
+        let mut hash: HashMap<_, _, DefaultState<MurmurHasher>> = Default::default();
+        hash.insert(42, "the answer");
+        assert_eq!(hash.get(&42), Some(&"the answer"));
+
+        let mut hash: HashMap<_, _, RandomMurmurState> = Default::default();
+        hash.insert(42, "the answer");
+        assert_eq!(hash.get(&42), Some(&"the answer"));
+    }
 }
+

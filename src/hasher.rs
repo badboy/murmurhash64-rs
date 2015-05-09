@@ -12,9 +12,16 @@ use murmurhash64::murmur_hash64a;
 /// ```rust
 /// # #![feature(std_misc)]
 /// # use std::collections::HashMap;
-/// # use murmurhash64::{MurmurHasher,MurmurState};
-/// let s = MurmurState::new();
-/// let mut hashmap : HashMap<&'static str, usize, MurmurState> = HashMap::with_hash_state(s);
+/// # use std::default::Default;
+/// # use murmurhash64::{MurmurHasher,RandomMurmurState};
+/// # use std::collections::hash_state::DefaultState;
+/// let mut hashmap : HashMap<_, _, DefaultState<MurmurHasher>> = Default::default();
+/// hashmap.insert("abc", 123);
+/// hashmap.insert("def", 456);
+/// assert_eq!(Some(&123), hashmap.get("abc"));
+/// assert_eq!(Some(&456), hashmap.get("def"));
+///
+/// let mut hashmap : HashMap<_, _, RandomMurmurState> = Default::default();
 /// hashmap.insert("abc", 123);
 /// hashmap.insert("def", 456);
 /// assert_eq!(Some(&123), hashmap.get("abc"));

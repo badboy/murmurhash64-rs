@@ -1,11 +1,17 @@
 [package]
 name = "murmurhash64"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Jan-Erik Rediger <badboy@archlinux.us>"]
+
+keywords = ["hash"]
 description = "Implementation of MurmurHash2 (64bit version)"
-homepage = "https://github.com/badboy/murmurhash64-rs"
+
 license = "BSD-3-Clause"
 readme = "README.md"
+
+documentation = "http://badboy.github.io/murmurhash64-rs/murmurhash64/"
+homepage = "https://github.com/badboy/murmurhash64-rs"
+repository = "https://github.com/badboy/murmurhash64-rs"
 
 [dependencies]
 rand = "0.3"

@@ -6,6 +6,8 @@ Based on the implementation for Redis
 More info and different implementations available at:
 <https://sites.google.com/site/murmurhash/>
 
+[Documentation](http://badboy.github.io/murmurhash64-rs/murmurhash64/)
+
 ## Build
 
 ```
@@ -30,10 +32,11 @@ As a `Hasher`
 
 ```rust
 use std::collections::HashMap;
-use murmurhash64::MurmurHasher;
+use murmurhash64::{MurmurHasher,RandomMurmurState};
+use std::default::Default;
 
 fn main() {
-    let mut hashmap: HashMap<&str, uint, MurmurHasher> = HashMap::with_hasher(MurmurHasher::new());
+    let mut hashmap : HashMap<_, _, RandomMurmurState> = Default::default();
     hashmap.insert("abc", 123);
     hashmap.insert("def", 456);
     assert_eq!(Some(&123), hashmap.get("abc"));

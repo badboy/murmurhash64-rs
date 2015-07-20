@@ -10,7 +10,7 @@ use murmurhash64::murmur_hash64a;
 /// # Basic Example
 ///
 /// ```rust
-/// # #![feature(std_misc)]
+/// # #![feature(hashmap_hasher)]
 /// # use std::collections::HashMap;
 /// # use std::default::Default;
 /// # use murmurhash64::{MurmurHasher,RandomMurmurState};

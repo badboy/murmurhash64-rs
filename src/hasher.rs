@@ -105,7 +105,7 @@ mod test {
     #[test]
     fn hashmap_str() {
         let s = MurmurState::new();
-        let mut hashmap : HashMap<&'static str, isize, MurmurState> = HashMap::with_hash_state(s);
+        let mut hashmap : HashMap<_, _, MurmurState> = HashMap::with_hash_state(s);
         hashmap.insert("abc", 123);
         hashmap.insert("def", 456);
         assert_eq!(Some(&123), hashmap.get("abc"));
@@ -115,7 +115,7 @@ mod test {
     #[test]
     fn hashmap_uint() {
         let s = MurmurState::new();
-        let mut hashmap : HashMap<usize, &'static str, MurmurState> = HashMap::with_hash_state(s);
+        let mut hashmap : HashMap<_, _, MurmurState> = HashMap::with_hash_state(s);
         hashmap.insert(123, "abc");
         hashmap.insert(456, "def");
         assert_eq!(Some(&"abc"), hashmap.get(&123));

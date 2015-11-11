@@ -16,15 +16,21 @@
 //! let hash = murmur_hash64a(key.as_bytes(), seed);
 //! ```
 
+#![cfg(feature = "hasher")]
 #![feature(hashmap_hasher)]
 
 extern crate rand;
 
 pub use murmurhash64::murmur_hash64a;
+
+#[cfg(feature = "hasher")]
 pub use hasher::MurmurHasher;
+#[cfg(feature = "hasher")]
 pub use hasher::MurmurState;
+#[cfg(feature = "hasher")]
 pub use hasher::RandomMurmurState;
 
+#[cfg(feature = "hasher")]
 mod hasher;
 
 mod murmurhash64 {

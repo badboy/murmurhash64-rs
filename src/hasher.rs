@@ -2,7 +2,7 @@ use std::default::Default;
 use std::hash::Hasher;
 use std::collections::hash_state::HashState;
 use rand::{self,Rng};
-use murmurhash64::murmur_hash64a;
+use super::murmur_hash64a;
 
 /// MurmurHash2 can also be used as the hash algorithm in a HashMap
 /// (or similar). For this it implements the std::hash::Hasher trait.

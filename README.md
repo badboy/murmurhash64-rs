@@ -1,5 +1,8 @@
 # MurmurHash2 (64bit) implementation
 
+[![Build Status](https://travis-ci.org/badboy/murmurhash64-rs.svg?branch=master)](https://travis-ci.org/badboy/murmurhash64-rs)
+[![crates.io](http://meritbadge.herokuapp.com/murmurhash64)](https://crates.io/crates/murmurhash64)
+
 Based on the implementation for Redis
 ([antirez/redis src/hyperloglog.c](https://github.com/antirez/redis/blob/93eed9ae0163e328c33b16ab9ea3c4fbe0f98674/src/hyperloglog.c#L390-L439))
 

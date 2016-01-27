@@ -16,8 +16,6 @@
 //! let hash = murmur_hash64a(key.as_bytes(), seed);
 //! ```
 
-#![cfg_attr(feature = "hasher", feature(hashmap_hasher))]
-
 extern crate rand;
 
 #[cfg(feature = "hasher")]

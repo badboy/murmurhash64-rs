@@ -1,8 +1,8 @@
 use std::default::Default;
 use std::hash::Hasher;
-use std::collections::hash_state::HashState;
 use rand::{self,Rng};
 use super::murmur_hash64a;
+use std::hash::BuildHasher;
 
 /// MurmurHash2 can also be used as the hash algorithm in a HashMap
 /// (or similar). For this it implements the std::hash::Hasher trait.
@@ -71,9 +71,9 @@ impl Default for MurmurState {
     fn default() -> MurmurState { MurmurState::new() }
 }
 
-impl HashState for MurmurState {
+impl BuildHasher for MurmurState {
     type Hasher = MurmurHasher;
-    fn hasher(&self) -> MurmurHasher {
+    fn build_hasher(&self) -> MurmurHasher {
         MurmurHasher::with_seed(self.0)
     }
 }
@@ -90,9 +90,9 @@ impl Default for RandomMurmurState {
     fn default() -> RandomMurmurState { RandomMurmurState::new() }
 }
 
-impl HashState for RandomMurmurState {
+impl BuildHasher for RandomMurmurState {
     type Hasher = MurmurHasher;
-    fn hasher(&self) -> MurmurHasher {
+    fn build_hasher(&self) -> MurmurHasher {
         MurmurHasher::with_seed(self.0)
     }
 }
@@ -105,7 +105,7 @@ mod test {
     #[test]
     fn hashmap_str() {
         let s = MurmurState::new();
-        let mut hashmap : HashMap<_, _, MurmurState> = HashMap::with_hash_state(s);
+        let mut hashmap : HashMap<_, _, MurmurState> = HashMap::with_hasher(s);
         hashmap.insert("abc", 123);
         hashmap.insert("def", 456);
         assert_eq!(Some(&123), hashmap.get("abc"));
@@ -115,7 +115,7 @@ mod test {
     #[test]
     fn hashmap_uint() {
         let s = MurmurState::new();
-        let mut hashmap : HashMap<_, _, MurmurState> = HashMap::with_hash_state(s);
+        let mut hashmap : HashMap<_, _, MurmurState> = HashMap::with_hasher(s);
         hashmap.insert(123, "abc");
         hashmap.insert(456, "def");
         assert_eq!(Some(&"abc"), hashmap.get(&123));
@@ -124,9 +124,9 @@ mod test {
 
     #[test]
     fn hashmap_default() {
-        use std::collections::hash_state::DefaultState;
+        use std::hash::BuildHasherDefault;
 
-        let mut hash: HashMap<_, _, DefaultState<MurmurHasher>> = Default::default();
+        let mut hash: HashMap<_, _, BuildHasherDefault<MurmurHasher>> = Default::default();
         hash.insert(42, "the answer");
         assert_eq!(hash.get(&42), Some(&"the answer"));
 

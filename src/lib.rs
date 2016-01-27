@@ -16,8 +16,7 @@
 //! let hash = murmur_hash64a(key.as_bytes(), seed);
 //! ```
 
-#![cfg(feature = "hasher")]
-#![feature(hashmap_hasher)]
+#![cfg_attr(feature = "hasher", feature(hashmap_hasher))]
 
 extern crate rand;
 
@@ -28,8 +27,7 @@ pub use hasher::MurmurState;
 #[cfg(feature = "hasher")]
 pub use hasher::RandomMurmurState;
 
-#[cfg(feature = "hasher")]
-mod hasher;
+#[cfg(feature = "hasher")] mod hasher;
 
 /// Hash the given key and the given seed.
 ///

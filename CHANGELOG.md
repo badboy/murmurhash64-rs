@@ -1,4 +1,4 @@
-### 0.3.0 - 27.01.2015
+### 0.3.0 - 27.01.2016
 
 * Implement new BuildHasher/Hasher interface (nightly only, will be stable in Rust 1.7)
 

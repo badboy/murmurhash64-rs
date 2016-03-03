@@ -8,6 +8,9 @@ use std::hash::BuildHasher;
 /// (or similar).
 /// It implements the necessary traits.
 ///
+/// The new hasher traits are only available since Rust 1.7.0
+/// To use them, enable the `hasher` feature in your build.
+///
 /// # Basic Example
 ///
 /// ```rust

@@ -25,7 +25,7 @@ script:
       travis-cargo test &&
       travis-cargo --only stable build -- --features hasher &&
       travis-cargo --only stable test -- --features hasher &&
-      travis-cargo --only stable doc
+      travis-cargo --only stable doc -- --features hasher
 after_success:
   - travis-cargo --only stable doc-upload
   - travis-cargo coveralls --no-sudo

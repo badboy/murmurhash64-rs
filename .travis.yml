@@ -9,9 +9,10 @@ addons:
       - libdw-dev
 
 rust:
-  - nightly
   - stable
   - beta
+  - nightly
+  - 1.6.0
 
 before_script:
   - |
@@ -22,6 +23,8 @@ script:
   - |
       travis-cargo build &&
       travis-cargo test &&
+      travis-cargo --only stable build -- --features hasher &&
+      travis-cargo --only stable test -- --features hasher &&
       travis-cargo --only stable doc
 after_success:
   - travis-cargo --only stable doc-upload

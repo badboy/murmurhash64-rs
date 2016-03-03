@@ -5,17 +5,19 @@ use super::murmur_hash64a;
 use std::hash::BuildHasher;
 
 /// MurmurHash2 can also be used as the hash algorithm in a HashMap
-/// (or similar). For this it implements the std::hash::Hasher trait.
+/// (or similar).
+/// It implements the necessary traits.
+///
+/// The new hasher traits are only available since Rust 1.7.0
+/// To use them, enable the `hasher` feature in your build.
 ///
 /// # Basic Example
 ///
 /// ```rust
-/// # #![feature(hashmap_hasher)]
 /// # use std::collections::HashMap;
 /// # use std::default::Default;
-/// # use murmurhash64::{MurmurHasher,RandomMurmurState};
-/// # use std::collections::hash_state::DefaultState;
-/// let mut hashmap : HashMap<_, _, DefaultState<MurmurHasher>> = Default::default();
+/// # use murmurhash64::{MurmurHasher, MurmurState, RandomMurmurState};
+/// let mut hashmap : HashMap<_, _, MurmurState> = Default::default();
 /// hashmap.insert("abc", 123);
 /// hashmap.insert("def", 456);
 /// assert_eq!(Some(&123), hashmap.get("abc"));
@@ -133,6 +135,16 @@ mod test {
         let mut hash: HashMap<_, _, RandomMurmurState> = Default::default();
         hash.insert(42, "the answer");
         assert_eq!(hash.get(&42), Some(&"the answer"));
+    }
+
+    #[test]
+    fn hashmap_build_hasher_default() {
+        use std::hash::BuildHasherDefault;
+        type MyHasher = BuildHasherDefault<MurmurHasher>;
+
+        let mut map: HashMap<_, _, MyHasher> = HashMap::default();
+        map.insert(42, "the answer");
+        assert_eq!(map.get(&42), Some(&"the answer"));
     }
 }
 

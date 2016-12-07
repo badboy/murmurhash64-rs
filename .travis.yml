@@ -21,16 +21,16 @@ before_script:
 
 script:
   - |
-      travis-cargo build &&
-      travis-cargo test &&
-      travis-cargo --only stable build -- --features hasher &&
-      travis-cargo --only stable test -- --features hasher &&
-      travis-cargo --only stable doc -- --features hasher
+      FEAT="" &&
+      rustc --version | grep -vq 1.6.0 || FEAT="--features no-hasher" &&
+      travis-cargo build -- $FEAT &&
+      travis-cargo test -- $FEAT &&
+      travis-cargo --only stable doc -- $FEAT
 after_success:
   - travis-cargo --only stable doc-upload
   - travis-cargo coveralls --no-sudo
 
 env:
   global:
-    - TRAVIS_CARGO_NIGHTLY_FEATURE="hasher"
+    - TRAVIS_CARGO_NIGHTLY_FEATURE=""
     - secure: kWv9GF+ZWtq4tNpbCubnIc4NV437dTHhPBent03aEYs6I2tPfX6AiVsb69tIxyLkmFypGdRo7T+7G78mpUWHX7rgBnHG+91Qv/0Nj9TRE7U04pLKerq88pix8apivWatdlUnhOzd86tTnYp6H9LP9gUSTmBCyFcKIuRAZFH1sZg=

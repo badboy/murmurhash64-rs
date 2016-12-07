@@ -16,3 +16,5 @@ repository = "https://github.com/badboy/murmurhash64-rs"
 [dependencies]
 rand = "0.3"
 
+[features]
+no-hasher = []

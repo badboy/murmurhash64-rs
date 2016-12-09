@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["murmur_hash64a","Hash the given key and the given seed."]],"struct":[["MurmurHasher","MurmurHash2 can also be used as the hash algorithm in a HashMap (or similar). It implements the necessary traits."],["MurmurState",""],["RandomMurmurState",""]]});

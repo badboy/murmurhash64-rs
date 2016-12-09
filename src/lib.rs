@@ -18,14 +18,15 @@
 
 extern crate rand;
 
-#[cfg(feature = "hasher")]
+#[cfg(not(feature = "no-hasher"))]
 pub use hasher::MurmurHasher;
-#[cfg(feature = "hasher")]
+#[cfg(not(feature = "no-hasher"))]
 pub use hasher::MurmurState;
-#[cfg(feature = "hasher")]
+#[cfg(not(feature = "no-hasher"))]
 pub use hasher::RandomMurmurState;
 
-#[cfg(feature = "hasher")] mod hasher;
+#[cfg(not(feature = "no-hasher"))]
+mod hasher;
 
 /// Hash the given key and the given seed.
 ///

@@ -41,7 +41,7 @@ mod hasher;
 ///
 /// let hash = murmur_hash64a(key.as_bytes(), seed);
 /// ```
-pub fn murmur_hash64a(key: &[u8], seed: u64) -> u64 {
+pub const fn murmur_hash64a(key: &[u8], seed: u64) -> u64 {
     let m : u64 = 0xc6a4a7935bd1e995;
     let r : u8 = 47;
 
